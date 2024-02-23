@@ -12,12 +12,8 @@ const gameBoard = (function(){
         for(let i = 0; i<squares.length; i++){
             (function(index){
                 squares[index].addEventListener("click",function(){
-                    if(!gameEnd){
-                        if(!board.includes(0)){
-                            alert("It's a tie!");
-                            gameEnd=true;
-                            
-                        };
+                    if(!gameEnd && !checkTie()){
+                        
                         gameBoard[index]=playerSymbol;
                         spot=index;
 
@@ -26,20 +22,33 @@ const gameBoard = (function(){
                         gameEnd=checkWin(playerSymbol);
                         if(checkWin(playerSymbol)){setTimeout(()=>alert("YOU WIN!"))}
                         
+                        
 
                         opIndex=opponentTurn();
                         squares[opIndex].innerHTML=opSymbol;
                         gameEnd=checkWin(opSymbol);
-                        if (checkWin(opSymbol)){setTimeout(()=>alert("YOU Lose!"))};
-                        
+                        if (checkWin(opSymbol)){setTimeout(()=>alert("YOU Lose!"))}
+
                         squares[index].disabled="disabled";
                         squares[opIndex].disabled="disabled";
+                        checkTie();
                     }
                     
                     
                 })
             })(i);
     }
+    }
+    function checkTie(){
+        if(!board.includes(0) && (!gameEnd &&!checkWin(playerSymbol) && !checkWin(opSymbol))){
+            alert("It's a tie!");
+            gameEnd=true;
+            return true;
+        }
+        else{
+            gameEnd=false;
+            return false;
+        };
     }
     function displayBoard(){
         rowOne = board[0].toString() + " " + board[1].toString() + " " + board[2].toString();
