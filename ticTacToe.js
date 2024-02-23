@@ -12,16 +12,29 @@ const gameBoard = (function(){
         for(let i = 0; i<squares.length; i++){
             (function(index){
                 squares[index].addEventListener("click",function(){
-                    gameBoard[index]=placeSymbol;
-                    spot=index;
-                    placeSymbol(playerSymbol,spot);
-                    squares[index].innerHTML=playerSymbol;
-                    console.log("Okay, now this is the board");
-                    displayBoard();
-                    opIndex=opponentTurn();
-                    squares[opIndex].innerHTML=opSymbol;
-                    console.log("The opponent has finished their turn, now this is the board");
-                    displayBoard();
+                    if(!gameEnd){
+                        if(!board.includes(0)){
+                            alert("It's a tie!");
+                            gameEnd=true;
+                            
+                        };
+                        gameBoard[index]=playerSymbol;
+                        spot=index;
+
+                        placeSymbol(playerSymbol,spot);
+                        squares[index].innerHTML=playerSymbol;
+                        gameEnd=checkWin(playerSymbol);
+                        if(checkWin(playerSymbol)){setTimeout(()=>alert("YOU WIN!"))}
+                        
+
+                        opIndex=opponentTurn();
+                        squares[opIndex].innerHTML=opSymbol;
+                        gameEnd=checkWin(opSymbol);
+                        if (checkWin(opSymbol)){setTimeout(()=>alert("YOU Lose!"))};
+                        
+                        squares[index].disabled="disabled";
+                        squares[opIndex].disabled="disabled";
+                    }
                     
                     
                 })
@@ -50,9 +63,7 @@ const gameBoard = (function(){
         };
     }
     function checkWin(symbol){
-        if(!0 in board){
-            return false;
-        }
+
         //check rows
         if(board[0] == symbol && board[1] == symbol && board[2] == symbol){ return true}
         else if (board[3] == symbol && board[4] == symbol && board[5] == symbol){ return true}
@@ -74,6 +85,7 @@ const gameBoard = (function(){
     let playerSymbol="X"
     let opSymbol="O"
     let spot=-1;
+    let gameEnd=false;
     let squares=document.getElementsByClassName("square");
     function createPlayer(name, symbol){
         playerName=name;
