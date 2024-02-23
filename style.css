@@ -1,0 +1,17 @@
+body{
+ display: flex;
+ justify-content: center;
+
+}
+.square{
+    height: 20vh;
+    width: 20vw;
+    
+    border: solid black;
+}
+.board{
+    
+    display:inline-grid;
+    grid-template-columns:  repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
