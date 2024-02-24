@@ -17,42 +17,55 @@ const gameBoard = (function(){
     let symbolChosen=false;
     let squares=document.getElementsByClassName("square");
     let symbols=document.getElementsByClassName("symbol");
-    let restart = document.getElementById("reset")
+    let restart = document.getElementById("reset");
+    symbolChosen=true;
+    symbols[0].disabled="disabled";
+    symbols[1].disabled=false;
+    function reset(){
+        board = [
+            0, 0, 0,
+            0, 0, 0,
+            0, 0, 0
+        ];
+        playerName="Default"
+        playerSymbol="X"
+        opSymbol="O"
+        spot=-1;
+        gameEnd=false;
+        gameStart=false;
+        symbolChosen=true;
+        symbols[0].disabled="disabled";
+        symbols[1].disabled=false;
+        for(let i = 0; i<squares.length;i++){
+            squares[i].innerHTML="";
+            squares[i].disabled=false;
+        }
+        
+    }
     function setResetButton(){
         restart.addEventListener("click",function(){
-            board = [
-                0, 0, 0,
-                0, 0, 0,
-                0, 0, 0
-            ];
-            playerName="Default"
-            playerSymbol="X"
-            opSymbol="O"
-            spot=-1;
-            gameEnd=false;
-            gameStart=false;
-            symbolChosen=false;
-            for(let i = 0; i<squares.length;i++){
-                squares[i].innerHTML="";
-                squares[i].disabled=false;
-            }
+            reset();
         })
     }
     function setChooseSymbolButtons(){
         symbols[0].addEventListener("click",function(){
-            if(!gameStart){
-                playerSymbol="X";
-                opSymbol="O";
-                symbolChosen=true;
-            }
+            reset();
+            playerSymbol="X";
+            opSymbol="O";
+            symbolChosen=true;
+            symbols[0].disabled="disabled";
+            symbols[1].disabled=false;
+            
         })
 
         symbols[1].addEventListener("click",function(){
-            if(!gameStart){
-                playerSymbol="O";
-                opSymbol="X";
-                symbolChosen=true;
-            }
+            reset();
+            playerSymbol="O";
+            opSymbol="X";
+            symbolChosen=true;
+            symbols[1].disabled="disabled";
+            symbols[0].disabled=false;
+            
         })
     }
     function setBoardButtons(){
@@ -145,6 +158,7 @@ const gameBoard = (function(){
         else (opSymbol = 'X');
     }
     function playGame(){
+        
         setResetButton();
         setChooseSymbolButtons();
         setBoardButtons();
