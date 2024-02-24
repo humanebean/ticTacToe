@@ -1,7 +1,5 @@
 body{
- display: flex;
- justify-content: center;
-
+    display: inline-grid;
 }
 .square{
     height: 20vh;
@@ -10,8 +8,11 @@ body{
     border: solid black;
 }
 .board{
-    
     display:inline-grid;
     grid-template-columns:  repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
+}
+.symbol{
+    height: 5vh;
+    width: 5vw;
 }

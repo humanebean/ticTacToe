@@ -3,31 +3,78 @@ function player(name,symbol){
     this.symbol=symbol;
 }
 const gameBoard = (function(){
-    const board = [
+    let board = [
                     0, 0, 0,
                     0, 0, 0,
                     0, 0, 0
                 ];
+    let playerName="Default"
+    let playerSymbol="X"
+    let opSymbol="O"
+    let spot=-1;
+    let gameEnd=false;
+    let gameStart=false;
+    let symbolChosen=false;
+    let squares=document.getElementsByClassName("square");
+    let symbols=document.getElementsByClassName("symbol");
+    let restart = document.getElementById("reset")
+    function setResetButton(){
+        restart.addEventListener("click",function(){
+            board = [
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0
+            ];
+            playerName="Default"
+            playerSymbol="X"
+            opSymbol="O"
+            spot=-1;
+            gameEnd=false;
+            gameStart=false;
+            symbolChosen=false;
+            for(let i = 0; i<squares.length;i++){
+                squares[i].innerHTML="";
+                squares[i].disabled=false;
+            }
+        })
+    }
+    function setChooseSymbolButtons(){
+        symbols[0].addEventListener("click",function(){
+            if(!gameStart){
+                playerSymbol="X";
+                opSymbol="O";
+                symbolChosen=true;
+            }
+        })
+
+        symbols[1].addEventListener("click",function(){
+            if(!gameStart){
+                playerSymbol="O";
+                opSymbol="X";
+                symbolChosen=true;
+            }
+        })
+    }
     function setBoardButtons(){
         for(let i = 0; i<squares.length; i++){
             (function(index){
                 squares[index].addEventListener("click",function(){
-                    if(!gameEnd && !checkTie()){
-                        
+                    if(!gameEnd && !checkTie() &&symbolChosen){
+                        gameStart=true;
                         gameBoard[index]=playerSymbol;
                         spot=index;
 
                         placeSymbol(playerSymbol,spot);
                         squares[index].innerHTML=playerSymbol;
                         gameEnd=checkWin(playerSymbol);
-                        if(checkWin(playerSymbol)){setTimeout(()=>alert("YOU WIN!"))}
+                        if(checkWin(playerSymbol)){setTimeout(()=>alert("YOU WIN!"));return}
                         
                         
 
                         opIndex=opponentTurn();
                         squares[opIndex].innerHTML=opSymbol;
                         gameEnd=checkWin(opSymbol);
-                        if (checkWin(opSymbol)){setTimeout(()=>alert("YOU Lose!"))}
+                        if (checkWin(opSymbol)){setTimeout(()=>alert("YOU Lose!"));return}
 
                         squares[index].disabled="disabled";
                         squares[opIndex].disabled="disabled";
@@ -90,12 +137,7 @@ const gameBoard = (function(){
         if (!board.includes(0)) {return true}
         else {return false};
     }
-    let playerName="Default"
-    let playerSymbol="X"
-    let opSymbol="O"
-    let spot=-1;
-    let gameEnd=false;
-    let squares=document.getElementsByClassName("square");
+    
     function createPlayer(name, symbol){
         playerName=name;
         playerSymbol=symbol;
@@ -103,7 +145,9 @@ const gameBoard = (function(){
         else (opSymbol = 'X');
     }
     function playGame(){
-            setBoardButtons();
+        setResetButton();
+        setChooseSymbolButtons();
+        setBoardButtons();
         
     }
     return{
